@@ -1,0 +1,1 @@
+Perfil = new Meteor.Collection("perfil");
