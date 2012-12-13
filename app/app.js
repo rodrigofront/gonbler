@@ -10,7 +10,8 @@ if (Meteor.isClient) {
         console.log("You pressed the button");
     },
 
-   'click #login' :   function() {
+
+      'click #login':   function login() {
     FB.login(function(response) {
         if (response.authResponse) {
             logado();
@@ -21,13 +22,20 @@ if (Meteor.isClient) {
     });
 },
 
-       'click #logout': function () {
-       console.log('Oi eu sou o logout');
-      },
+       'click #logout': function logout(){
+  FB.logout(function(response) {
+  // user is now logged out
+  console.log("user is now logged out");
+});
+},
 
-       'click #home': function () {
-       console.log('Oi eu sou o home');
-      },
+       'click #home': function nome(){
+FB.api('/me', function(response) {
+$("#name").text("Olá " + response.name );
+$("#avatar").attr("src","https://graph.facebook.com/" + response.id + "/picture")
+});
+
+},
 
   });
   window.fbAsyncInit = function() {
@@ -62,18 +70,8 @@ if (Meteor.isClient) {
 console.log('logado');
  }
 
-function logout(){
-  FB.logout(function(response) {
-  // user is now logged out
-  console.log("user is now logged out");
-});
-}
-function nome(){
-FB.api('/me', function(response) {
-  alert('Your name is ' + response.name);
-});
 
-}
+
   // Load the SDK's source Asynchronously
   // Note that the debug version is being actively developed and might
   // contain some type checks that are overly strict.
