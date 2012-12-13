@@ -32,7 +32,16 @@ if (Meteor.isClient) {
        'click #home': function nome(){
 FB.api('/me', function(response) {
 $("#name").text("Olá " + response.name );
-$("#avatar").attr("src","https://graph.facebook.com/" + response.id + "/picture")
+$("#avatar").attr("src","https://graph.facebook.com/" + response.id + "/picture");
+
+Perfil.insert(
+      {
+        id: response.id,
+        user: response.name,
+      }
+);
+
+
 });
 
 },
@@ -52,12 +61,12 @@ $("#avatar").attr("src","https://graph.facebook.com/" + response.id + "/picture"
     FB.getLoginStatus(function(response) {
       if (response.status === 'connected') {
         // connected
+        console.log('conectado');
       } else if (response.status === 'not_authorized') {
         // not_authorized
         
       } else {
         // not_logged_in
-      
       }
  });
 
