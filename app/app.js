@@ -10,7 +10,7 @@ if (Meteor.isClient) {
         console.log("You pressed the button");
     },
 
-      'click #login':   function login() {
+   'click #login' :   function() {
     FB.login(function(response) {
         if (response.authResponse) {
             logado();
