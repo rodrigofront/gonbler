@@ -66,9 +66,9 @@ $("#avatar").attr("src","https://graph.facebook.com/" + response.id + "/picture"
 
 
 
- var logado = function() {
-console.log('logado');
- }
+function logado() {
+  console.log('logado');
+ };
 
 
 
