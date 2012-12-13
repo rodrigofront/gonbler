@@ -1,53 +1,49 @@
+Perfil = new Meteor.Collection('perfil');
+
 if (Meteor.isClient) {
-  Template.hello.greeting = function () {
-    return "Welcome to app.";
-  };
 
-  Template.hello.events({
-    'click input' : function () {
-      // template data, if any, is available in 'this'
-      if (typeof console !== 'undefined')
-        console.log("You pressed the button");
-    },
+  //LISTAGEM DOS PERFIL GRAVADOS
+  Template.perfil_list.perfil = function() {
+    return Perfil.find({}, {sort: {likes: -1, name: 1}});
+  };
 
+  Template.home_perfil.events = {
+    //Quando usuário loga pelo bt
+    'click #bt-login': function() {
+       FB.login(function(response) {
+          if (response.authResponse) {
+            console.log("usuário logado facebook");
+            FB.api('/me', function(response) {
+              $("#name").text("Olá " + response.name );
+              $("#id").text( response.id );
+              $("#avatar").attr("src","https://graph.facebook.com/" + response.id + "/picture");
+            });
+          } else {
+            console.log("conexão cancelada pelo facebook");
+          }
+      });
+    },
 
-      'click #login':   function login() {
-    FB.login(function(response) {
-        if (response.authResponse) {
-            logado();
-        } else {
-            // cancelled
-            console.log("teste2");
-        }
-    });
-},
+    //usuário deslogando do app
+    'click #bt-logout': function(){
+      FB.logout(function(response) {
+        // user is now logged out
+        console.log("usuário desconectado do facebook");
+      });
+    },
 
-       'click #logout': function logout(){
-  FB.logout(function(response) {
-  // user is now logged out
-  console.log("user is now logged out");
-});
-},
+    //cadastrando as informações do usuario
+    'click #cad-usuario': function() {
+      var str = $("#name").text(),
+          name = str.replace("Olá", ""),
+          id = $("#id").text();
 
-       'click #home': function nome(){
-FB.api('/me', function(response) {
-$("#name").text("Olá " + response.name );
-$("#avatar").attr("src","https://graph.facebook.com/" + response.id + "/picture");
+      Perfil.insert({ id: id, user: name })
+    }
+  };
 
-Perfil.insert(
-      {
-        id: response.id,
-        user: response.name,
-      }
-);
-
-
-});
-
-},
-
-  });
-  window.fbAsyncInit = function() {
+  //FACEBOOK
+  window.fbAsyncInit = function() {
     // init the FB JS SDK
     FB.init({
       appId      : '118794124948220', // App ID from the App Dashboard
@@ -61,27 +57,21 @@ Perfil.insert(
     FB.getLoginStatus(function(response) {
       if (response.status === 'connected') {
         // connected
-        console.log('conectado');
+        FB.api('/me', function(response) {
+          $("#name").text("Olá " + response.name );
+          $("#id").text( response.id );
+          $("#avatar").attr("src","https://graph.facebook.com/" + response.id + "/picture");
+        });
       } else if (response.status === 'not_authorized') {
         // not_authorized
         
       } else {
         // not_logged_in
       }
- });
-
-
+    });
   };
 
-
-
- var logado = function() {
-console.log('logado');
- }
-
-
-
-  // Load the SDK's source Asynchronously
+  // Load the SDK's source Asynchronously
   // Note that the debug version is being actively developed and might
   // contain some type checks that are overly strict.
   // Please report such bugs using the bugs tool.
@@ -92,10 +82,5 @@ console.log('logado');
      js.src = "https://connect.facebook.net/en_US/all" + (debug ? "/debug" : "") + ".js";
      ref.parentNode.insertBefore(js, ref);
    }(document, /*debug*/ false));
-}
 
-if (Meteor.isServer) {
-  Meteor.startup(function () {
-    // code to run on server at startup
-  });
 }

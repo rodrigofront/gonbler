@@ -1,23 +1,29 @@
 <head>
-  <title>app</title>
+  <title>teste</title>
 </head>
 
 <body>
-{{> hello}}
+  {{> home_perfil}}
+
+  {{> perfil_list}}
 </body>
 
-<template name="hello">
-<h1 id="name"></h1>
+<template name="home_perfil">
+  <li><a href="#" id="bt-login">Logar</a></li>
+  <li><a href="#" id="bt-logout">Logout</a></li>
 
-<div id="fb-root"></div>
+  <h1>Dados Perfil</h1>
+  <p id="name"></p>
+  <p id="id" style="display: none"></p>
+  <img src="" id="avatar" />
 
-<a  href="#" id="login">Login</a>
-<a  href="#" id="logout">Logout</a>
-<a href="#" id="home">nome</a>
+  <input type="button" value="Cadastra esse usuário no banco" id="cad-usuario" style="display: block">
 
-<img src="" id="avatar" alt="">
+</template>
 
-
-  <h2>Usuarios Cadastrados</h2>
-
+<template name="perfil_list">
+  <h1>Usuarios Cadastrados</h1>
+  {{#each perfil}}
+    <li>{{id}} - {{user}}</li>
+  {{/each}}
 </template>
