@@ -15,7 +15,7 @@ if (Meteor.isClient) {
         if (response.authResponse) {
             // connected
             console.log("teste");
-        } else {
+        } else { 
             // cancelled
             console.log("teste2");
         }
