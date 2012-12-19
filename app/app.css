@@ -1,1 +1,17 @@
 /* CSS declarations go here */
+body {font-family: "Trebuchet MS";color:#999}
+.conteudo {margin:auto;width:760px}
+.logo h1 {width:546px;height: 168px;background:  url(/img/logo_gonbler.png) 0 0 no-repeat;text-indent:-9999px;line-height: 20px;}
+h2 {font: bold 33px ;}
+h3 {font-size: 15px;line-height: 16px;}
+.login {}
+.btn-facebook {text-shadow: 0 -1px #2E5A87;
+color: white;
+background-color: #356DA6;
+border-color: #23578A;
+background-image: -webkit-linear-gradient(top,#629FC4 0%,#356DA6);
+background-image: -moz-linear-gradient(top,#629FC4 0%,#356DA6);
+background-image: -linear-gradient(top,#629FC4 0%,#356DA6);
+}
+/* classes basicas */
+.none {display:none}

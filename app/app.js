@@ -13,11 +13,11 @@ if (Meteor.isClient) {
        FB.login(function(response) {
           if (response.authResponse) {
             console.log("usuário logado facebook");
-            FB.api('/me', function(response) {
-              $("#name").text("Olá " + response.name );
-              $("#id").text( response.id );
-              $("#avatar").attr("src","https://graph.facebook.com/" + response.id + "/picture");
-            });
+            //FB.api('/me', function(response) {
+              //$("#name").text("Olá " + response.name );
+              //$("#id").text( response.id );
+              //$("#avatar").attr("src","https://graph.facebook.com/" + response.id + "/picture");
+            //});
           } else {
             console.log("conexão cancelada pelo facebook");
           }
@@ -39,6 +39,14 @@ if (Meteor.isClient) {
           id = $("#id").text();
 
       Perfil.insert({ id: id, user: name })
+    },  
+    //removendo usuario
+    'click #del-usuario': function() {
+      var str = $("#name").text(),
+          name = str.replace("Olá", ""),
+          id = $("#id").text();
+
+      Perfil.remove({ id: id })
     }
   };
 
@@ -82,5 +90,4 @@ if (Meteor.isClient) {
      js.src = "https://connect.facebook.net/en_US/all" + (debug ? "/debug" : "") + ".js";
      ref.parentNode.insertBefore(js, ref);
    }(document, /*debug*/ false));
-
-}​
+}

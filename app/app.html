@@ -1,27 +1,34 @@
 <head>
   <title>teste</title>
 </head>
-
 <body>
   {{> home_perfil}}
 
   {{> perfil_list}}
 </body>
-
 <template name="home_perfil">
-  <li><a href="#" id="bt-login">Logar</a></li>
-  <li><a href="#" id="bt-logout">Logout</a></li>
-
-  <h1>Dados Perfil</h1>
-  <p id="name"></p>
-  <p id="id" style="display: none"></p>
-  <img src="" id="avatar" />
-
-  <input type="button" value="Cadastra esse usuário no banco" id="cad-usuario" style="display: block">
-
+  <div class="conteudo"> 
+      <div class="logo">
+        <h1>Gonbler</h1>  
+      </div>
+      <h2>Pegue suas fotos, chame seus amigos e veja o quanto você é popular!</h2>
+      <h3>O gonbler é uma brincadeira onde você pode votar nas fotos mais bacanas, 
+trocar mensagens, integrar seu perfil com as suas outras comunidades online e o melhor, 
+conhecer novas pessoas.</h3>
+      <span id="name"></span>
+      <span id="id" style="display: none"></span>
+      <img src="" id="avatar" />   
+    <div class="login">
+      <a href="#" class="btn btn-primary btn-facebook" id="bt-login">Logar com o Facebook</a>
+      <a href="#" class="btn" id="bt-logout">Logout</a>      
+    </div>
+  </div>  
+</template>
 <template name="perfil_list">
-  <h1>Usuarios Cadastrados</h1>
-  {{#each perfil}}
+  <div class="none">
+    <h1>Usuarios Cadastrados</h1>
+    {{#each perfil}}
     <li>{{id}} - {{user}}</li>
-  {{/each}}
+    {{/each}}
+  </div>
 </template>
