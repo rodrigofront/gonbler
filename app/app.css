@@ -16,3 +16,19 @@ background-image: -linear-gradient(top,#629FC4 0%,#356DA6);
 /* classes basicas */
 .none {display:none}
 .left {float: left}
+
+.list-perfil {
+  width: 100%;
+  float: left;
+  margin: 0 auto;
+}
+
+.list-perfil li {
+  float: left;
+  margin: 10px;
+  text-align: center;
+}
+
+.list-perfil img {
+  display: block;
+}

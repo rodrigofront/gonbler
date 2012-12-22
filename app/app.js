@@ -8,7 +8,7 @@ if (Meteor.isClient) {
   };
   //criando as variaveis
   var id,nome;
-  
+
   //funcoes uteis do login
   function showButtonLogin (){
     $("#bt-login").show();
@@ -27,6 +27,26 @@ if (Meteor.isClient) {
     $("#id").text( id );
     $("#avatar").attr("src","https://graph.facebook.com/" + id + "/picture?type=normal");
   };
+  function getPerfil() {
+    FB.api('/me', function(response) {
+      id = response.id;
+      nome = response.name;
+      apelido = response.username;
+      console.log("get perfil");
+
+      GravaPerfil(id, nome);
+    });
+  };
+
+  function GravaPerfil() {
+    var gravatar = "https://graph.facebook.com/" + id + "/picture?type=normal";
+
+    Perfil.insert({ id: id, user: nome, img: gravatar });
+
+      console.log("grava perfil");
+
+  }
+
   Template.home_perfil.events = {
     //Quando usuário loga pelo bt
     'click #bt-login': function() {
@@ -36,13 +56,14 @@ if (Meteor.isClient) {
         showButtonLogout();
         hideButtonLogin();
         $(".perfil").show();
+        getPerfil();
+
         FB.api('/me', function(response) {
           id = response.id;
           nome = response.name;
           apelido = response.username;
           console.log(id ,nome,apelido);
           showPerfil(id,nome);
-
         });
       } else {
         console.log("conexão cancelada pelo facebook");
@@ -70,7 +91,7 @@ if (Meteor.isClient) {
       id = $("#id").text();
 
       Perfil.insert({ id: id, user: name })
-    },  
+    },
     //removendo usuario
     'click #del-usuario': function() {
       var str = $("#name").text(),
@@ -103,14 +124,20 @@ if (Meteor.isClient) {
           console.log(id ,nome);
           showPerfil(id,nome);
         });
+        $(".list-perfil").show();
+        $(".home").hide();
       } else if (response.status === 'not_authorized') {
         // not_authorized
         showButtonLogin();
         hideButtonLogout();
+        $(".list-perfil").hide();
+
       } else {
         // not_logged_in
         showButtonLogin();
         hideButtonLogout();
+        $(".list-perfil").hide();
+
       }
     });
   };
