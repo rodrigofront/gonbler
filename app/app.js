@@ -21,11 +21,16 @@ if (Meteor.isClient) {
   };
   function hideButtonLogout(){
     $("#bt-logout").hide();
+    $(".list-perfil").hide();
+    $(".home").show();
   };
   function showPerfil(id,nome){
     $("#name").text("Olá " + nome );
     $("#id").text( id );
     $("#avatar").attr("src","https://graph.facebook.com/" + id + "/picture?type=normal");
+
+    $(".list-perfil").show();
+    $(".home").hide();
   };
   function getPerfil() {
     FB.api('/me', function(response) {
@@ -41,9 +46,29 @@ if (Meteor.isClient) {
   function GravaPerfil() {
     var gravatar = "https://graph.facebook.com/" + id + "/picture?type=normal";
 
-    Perfil.insert({ id: id, user: nome, img: gravatar });
+    var ids = function() {
 
-      console.log("grava perfil");
+        var userIds = new Array();
+
+        Perfil.find({}).forEach(function(perfil) {
+          if (userIds.indexOf(perfil.id) === -1) {
+            userIds.push(perfil.id);
+          }
+        });
+
+        return userIds;
+      }
+
+      var listIds = ids(),
+          myUser = id,
+          UserExist = $.inArray( myUser, listIds );
+
+      if ( UserExist == -1 ) {
+        Perfil.insert({ id: id, user: nome, img: gravatar });
+      }
+      else {
+        console.log("Usuário Cadastrado");
+      }
 
   }
 
