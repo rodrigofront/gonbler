@@ -6,50 +6,79 @@ if (Meteor.isClient) {
   Template.perfil_list.perfil = function() {
     return Perfil.find({}, {sort: {likes: -1, name: 1}});
   };
-
+  //criando as variaveis
+  var id,nome;
+  
+  //funcoes uteis do login
+  function showButtonLogin (){
+    $("#bt-login").show();
+  };
+  function hideButtonLogin (){
+    $("#bt-login").hide();
+  };
+  function showButtonLogout(){
+    $("#bt-logout").show();
+  };
+  function hideButtonLogout(){
+    $("#bt-logout").hide();
+  };
+  function showPerfil(id,nome){
+    $("#name").text("Olá " + nome );
+    $("#id").text( id );
+    $("#avatar").attr("src","https://graph.facebook.com/" + id + "/picture?type=normal");
+  };
   Template.home_perfil.events = {
     //Quando usuário loga pelo bt
     'click #bt-login': function() {
-       FB.login(function(response) {
-          if (response.authResponse) {
-            console.log("usuário logado facebook");
-            //FB.api('/me', function(response) {
-              //$("#name").text("Olá " + response.name );
-              //$("#id").text( response.id );
-              //$("#avatar").attr("src","https://graph.facebook.com/" + response.id + "/picture");
-            //});
-          } else {
-            console.log("conexão cancelada pelo facebook");
-          }
-      });
-    },
+     FB.login(function(response) {
+      if (response.authResponse) {
+        console.log("usuário logado facebook");
+        showButtonLogout();
+        hideButtonLogin();
+        $(".perfil").show();
+        FB.api('/me', function(response) {
+          id = response.id;
+          nome = response.name;
+          apelido = response.username;
+          console.log(id ,nome,apelido);
+          showPerfil(id,nome);
+
+        });
+      } else {
+        console.log("conexão cancelada pelo facebook");
+      }
+    }
+    , {scope: 'email,user_photos'}
+    );
+   },
 
     //usuário deslogando do app
     'click #bt-logout': function(){
       FB.logout(function(response) {
         // user is now logged out
         console.log("usuário desconectado do facebook");
+        $(".perfil").hide();
+        showButtonLogin();
+        hideButtonLogout();
       });
     },
 
     //cadastrando as informações do usuario
     'click #cad-usuario': function() {
       var str = $("#name").text(),
-          name = str.replace("Olá", ""),
-          id = $("#id").text();
+      name = str.replace("Olá", ""),
+      id = $("#id").text();
 
       Perfil.insert({ id: id, user: name })
     },  
     //removendo usuario
     'click #del-usuario': function() {
       var str = $("#name").text(),
-          name = str.replace("Olá", ""),
-          id = $("#id").text();
-
+      name = str.replace("Olá", ""),
+      id = $("#id").text();
       Perfil.remove({ id: id })
     }
   };
-
   //FACEBOOK
   window.fbAsyncInit = function() {
     // init the FB JS SDK
@@ -65,16 +94,23 @@ if (Meteor.isClient) {
     FB.getLoginStatus(function(response) {
       if (response.status === 'connected') {
         // connected
+        console.log("Usuario ja esta logado")
+        hideButtonLogin();
+        showButtonLogout();
         FB.api('/me', function(response) {
-          $("#name").text("Olá " + response.name );
-          $("#id").text( response.id );
-          $("#avatar").attr("src","https://graph.facebook.com/" + response.id + "/picture");
+          id = response.id;
+          nome = response.name;
+          console.log(id ,nome);
+          showPerfil(id,nome);
         });
       } else if (response.status === 'not_authorized') {
         // not_authorized
-        
+        showButtonLogin();
+        hideButtonLogout();
       } else {
         // not_logged_in
+        showButtonLogin();
+        hideButtonLogout();
       }
     });
   };
@@ -84,10 +120,10 @@ if (Meteor.isClient) {
   // contain some type checks that are overly strict.
   // Please report such bugs using the bugs tool.
   (function(d, debug){
-     var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
-     if (d.getElementById(id)) {return;}
-     js = d.createElement('script'); js.id = id; js.async = true;
-     js.src = "https://connect.facebook.net/en_US/all" + (debug ? "/debug" : "") + ".js";
-     ref.parentNode.insertBefore(js, ref);
-   }(document, /*debug*/ false));
+   var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+   if (d.getElementById(id)) {return;}
+   js = d.createElement('script'); js.id = id; js.async = true;
+   js.src = "https://connect.facebook.net/en_US/all" + (debug ? "/debug" : "") + ".js";
+   ref.parentNode.insertBefore(js, ref);
+ }(document, /*debug*/ false));
 }

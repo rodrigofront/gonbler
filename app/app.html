@@ -7,20 +7,27 @@
   {{> perfil_list}}
 </body>
 <template name="home_perfil">
+  <div id="fb-root"></div>
   <div class="conteudo"> 
-      <div class="logo">
-        <h1>Gonbler</h1>  
-      </div>
-      <h2>Pegue suas fotos, chame seus amigos e veja o quanto você é popular!</h2>
-      <h3>O gonbler é uma brincadeira onde você pode votar nas fotos mais bacanas, 
-trocar mensagens, integrar seu perfil com as suas outras comunidades online e o melhor, 
-conhecer novas pessoas.</h3>
+    <div class="logo left">
+      <h1>Gonbler</h1>  
+    </div>
+    <div class="perfil left">
       <span id="name"></span>
       <span id="id" style="display: none"></span>
-      <img src="" id="avatar" />   
+      <img src="" id="avatar" />
+    </div>
     <div class="login">
-      <a href="#" class="btn btn-primary btn-facebook" id="bt-login">Logar com o Facebook</a>
-      <a href="#" class="btn" id="bt-logout">Logout</a>      
+      <a href="#" class="btn btn-primary btn-facebook none" id="bt-login">Login</a>
+      <a href="#" class="btn none" id="bt-logout">Logout</a> 
+      <a href="#">Tste</a>     
+    </div>
+    <div class="home">
+      <h2>Pegue suas fotos, chame seus amigos e veja o quanto você é popular!</h2>
+      <h3>O gonbler é uma brincadeira onde você pode votar nas fotos mais bacanas, 
+        trocar mensagens, integrar seu perfil com as suas outras comunidades online e o melhor, 
+        conhecer novas pessoas.
+      </h3>
     </div>
   </div>  
 </template>
