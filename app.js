@@ -2,14 +2,11 @@ Perfil = new Meteor.Collection('perfil');
 
 if (Meteor.isClient) {
 
-  //LISTAGEM DOS PERFIL GRAVADOS
-  Template.perfil_list.perfil = function() {
-    return Perfil.find({}, {sort: {likes: -1, name: 1}});
-  };
-  //criando as variaveis
+  //VARIAVEIS CRIADAS//
   var id,nome;
 
-  //funcoes uteis do login
+
+  //FUNCOES UTEIS//
   function showButtonLogin (){
     $("#bt-login").show();
   };
@@ -45,20 +42,15 @@ if (Meteor.isClient) {
 
   function GravaPerfil() {
     var gravatar = "https://graph.facebook.com/" + id + "/picture?type=normal";
-
     var ids = function() {
 
         var userIds = new Array();
 
         Perfil.find({}).forEach(function(perfil) {
-          if (userIds.indexOf(perfil.id) === -1) {
             userIds.push(perfil.id);
-          }
         });
-
         return userIds;
       }
-
       var listIds = ids(),
           myUser = id,
           UserExist = $.inArray( myUser, listIds );
@@ -69,9 +61,36 @@ if (Meteor.isClient) {
       else {
         console.log("Usuário Cadastrado");
       }
-
   }
+  
 
+
+
+
+
+
+
+
+  //TEMPLATE DOS PERFIS GRAVADOS//
+  Template.perfil_list.perfil = function() {
+    if (id == undefined){
+      console.log('id esta undefined');
+    }
+    else {
+      console.log("entrou no else")
+        
+    }
+    return Perfil.find({});
+  };
+
+
+
+
+
+
+
+
+  //TEMPLATE DOS EVENTOS DA HOME//
   Template.home_perfil.events = {
     //Quando usuário loga pelo bt
     'click #bt-login': function() {
@@ -125,7 +144,13 @@ if (Meteor.isClient) {
       Perfil.remove({ id: id })
     }
   };
-  //FACEBOOK
+
+
+
+
+
+
+  //FACEBOOK//
   window.fbAsyncInit = function() {
     // init the FB JS SDK
     FB.init({
@@ -146,9 +171,13 @@ if (Meteor.isClient) {
         FB.api('/me', function(response) {
           id = response.id;
           nome = response.name;
+          Template.perfil_list.perfil(id);
           console.log(id ,nome);
+
           showPerfil(id,nome);
+
         });
+        
         $(".list-perfil").show();
         $(".home").hide();
       } else if (response.status === 'not_authorized') {
